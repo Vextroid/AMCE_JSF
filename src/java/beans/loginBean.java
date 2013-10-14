@@ -44,30 +44,30 @@ public class loginBean {
     private DataSource dataSource;
     private Connection connection;
     
-    @PostConstruct
-    public void initialize(){
-        try{
-            connection = dataSource.getConnection();
-        }catch (SQLException sqle)
-        {
-            sqle.printStackTrace();
-        }
-    }
-    
-    /**
-     *
-     */
-    @PreDestroy
-     public void close()
-    {
-        try{
-            connection.close();
-        }catch (SQLException sqle)
-        {
-            sqle.printStackTrace();
-        }
-        
-    }
+//    @PostConstruct
+//    public void initialize(){
+//        try{
+//            connection = dataSource.getConnection();
+//        }catch (SQLException sqle)
+//        {
+//            sqle.printStackTrace();
+//        }
+//    }
+//    
+//    /**
+//     *
+//     */
+//    @PreDestroy
+//     public void close()
+//    {
+//        try{
+//            connection.close();
+//        }catch (SQLException sqle)
+//        {
+//            sqle.printStackTrace();
+//        }
+//        
+//    }
     
     
     
@@ -75,9 +75,10 @@ public class loginBean {
     private static EmployeeBeanRemote employeeBean;
         private String firstName;
         private int customerID;
+        private int id = 0;
         private String extra;
         private String isOk;
-        private String cusID ="Arin";
+        private String fName ="w";
         final String nextPage = "confirmation.xhtml";
 
     public String getFirstName() {
@@ -114,37 +115,35 @@ public class loginBean {
     
     public String validLogin()
     {
-//        
-//          Customer c = null;
-//         
-//          try{
-//          //Customer c = null;
-//          
-//          PreparedStatement sqlStatement = dbConnection.prepareStatement("SELECT * FROM DBUSR.CUSTOMER WHERE C_ID =" + id);
-//           
-//          ResultSet result = sqlStatement.executeQuery();
-// 
-//          result.next();
-//
-//          String fName = result.getString("FIRST_NAME");
-//
-//          return fName;
-//
-//      }catch (SQLException sqlException)
-//      {
-//          System.out.println("Could not find customer.");
-//          sqlException.printStackTrace();
-//          return sqlException.toString();
-//    }
+        //id = this.getCustomerID();
+         id = 10;
+         try{
+          //Customer c = null;
+          
+          PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM DBUSR.CUSTOMER WHERE C_ID =" + id);
+           
+          ResultSet result = sqlStatement.executeQuery();
+ 
+          //result.next();
+
+          fName = result.getString("FIRST_NAME");
+          
+          //int cusID = result.getInt("C_ID");
+
+          //return fName;
+
+      }catch (SQLException sqlException)
+      {
+          System.out.println("Could not find customer.");
+          sqlException.printStackTrace();
+          return sqlException.toString();
+    }
              
       
-        
-        int id = this.getCustomerID();
-        //String cusID = customerBean.readCustomer(id);
-        //String empID = employeeBean.readEmployee(id);
-        //cusID = "Arin";
-        
-        if(cusID.equals(firstName))
+        System.out.println(fName);
+        int cid = this.getCustomerID();
+        firstName = this.getFirstName();
+        if(fName.equals(firstName))
         {
          isOk ="true";
          return isOk;
@@ -156,6 +155,7 @@ public class loginBean {
          return isOk;
          //return "index.xhtml";
         }
+
     }
 
     private void sendJMSMessageToMessageQue(String messageData) {
